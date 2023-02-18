@@ -49,7 +49,7 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
- 
+
     
 class Post(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

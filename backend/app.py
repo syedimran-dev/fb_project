@@ -20,7 +20,7 @@ api.add_namespace(comment_ns)
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 SECRET_KEY = 'SECRET_KEY'
 SQLALCHEMY_TRACK_MODIFICATIONS = 'SQLALCHEMY_TRACK_MODIFICATIONS'
-app.config[ 'SQLALCHEMY_DATABASE_URI' ]= "sqlite:///"+os.path.join(BASE_DIR, 'facebook.db')
+app.config[ 'SQLALCHEMY_DATABASE_URI' ]= "postgresql://postgres:tester@localhost/facebook"
 app.config["JWT_SECRET_KEY"] = "super-secret"
 db.init_app(app)
 
@@ -35,8 +35,6 @@ CORS(app)
 JWTManager(app)
 
 
-with app.app_context():
-    db.create_all()
 
 @app.shell_context_processor
 def make_shell_context():
