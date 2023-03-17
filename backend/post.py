@@ -1,7 +1,10 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_current_user
 from models import Post, User, db
 from flask import request,jsonify
+import os
+import urllib.request
+from werkzeug.utils import secure_filename
 
 
 post_ns = Namespace('post', description="A namespace for Posts")
@@ -15,8 +18,8 @@ post_model = post_ns.model(
         "user_id": fields.Integer(),
         "title": fields.String(),
         "description": fields.String(),
-        "meida": fields.String(),
-        "creted_on": fields.DateTime()
+        "media": fields.String(),
+        "created_date": fields.DateTime()
     }
 )
 
@@ -35,11 +38,11 @@ class PostResources(Resource):
     @post_ns.expect(post_model)
     @jwt_required()
     def post(self):
-       current_user = get_jwt_identity()
+       current_users = get_jwt_identity()
        title = request.json['title']
        description = request.json['description']
        media = request.json['media']
-       new_post = Post(title=title, description=description, media=media, user_id = current_user)
+       new_post = Post(title=title, description=description, media= media, user_id = current_users)
        new_post.save()
        return new_post, 201
 
